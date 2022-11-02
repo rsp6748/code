@@ -1,0 +1,38 @@
+clc;
+clear all; 
+close all;
+N=input('length of sinusoidal signal=');
+L=input('upsampling factor=')
+% input signal generated
+n=0:1:N-1;
+x=0.25*sinc(0.25*(n-(N/2)));
+subplot(2,2,1);
+stem(n,x);
+xlabel('n');
+ylabel('x');
+title('Input signal');
+% Upsampling
+y=[zeros(1,L*N)];
+n1=1:1:L*N
+j=1:L:L*N;
+y(j)=x
+subplot(2,2,2)
+stem(n1,y);
+ylabel('y');
+title('upsampled signal');
+% frequency response of input signal
+f=-2:(1/(N/2)):2;
+ h=freqz(x,1,pi*f);
+ subplot(2,2,3);
+ plot(f,abs(h));
+ xlabel=("frequency");
+ ylabel("Magnitude");
+ title('frequency response of Input signal');
+ % frequency response of upsampled signal
+  h1=freqz(y,1,pi*f);
+ subplot(2,2,4)
+ plot(f,abs(h1));
+ xlabel=("frequency");
+ ylabel("Magnitude");
+ title('frequency response of upsampled  signal');
+
