@@ -1,0 +1,100 @@
+% Low Pass FIR Filter using Hamming Window.
+clc
+clear all;
+close all
+ 
+wc = input('énter the cutoff frequency')
+N = input('enter the order/length of filter')
+alpha = floor((N-1)/2);
+ 
+for n = 1:N
+    if (n-1) == alpha
+        hd(n) = (wc/pi)
+    else
+        hd(n) = (sin((n-1-alpha)*wc))/((n-1-alpha)*pi);
+    end
+   
+end
+%find w(n)
+wn = hamming(N);
+ 
+%find h(n)
+ 
+hn = hd'.*wn;
+w = 0:0.01:pi;
+h = freqz(hn, 1, w);
+subplot(3,1,1)
+plot(w/pi, abs(h));
+xlabel("Normalised frequency ");
+ylabel("Magnitude");
+ 
+%Applying sinusoidal signal as input
+t = 0:(1/314):1;
+fs = 570;
+x = 2*sin(2*pi*50*t)+4*sin(2*pi*120*t)+8*sin(2*pi*240*t);
+ 
+%frequency domain information of "x"
+y = fft(x);
+f = (0:length(x)-1)*fs/length(x);
+subplot(3,1,2);
+stem(f, abs(y));
+xlabel("frequency in hz");
+ylabel("frequency response of input signal");
+ 
+ 
+yout = y.*h;
+subplot(3,1,3);
+stem(f, abs(yout));
+xlabel("frequency in HZ");
+ylabel("frequency response of output signal");
+
+High pass Filter
+
+% High Pass FIR Filter using Hamming Window.
+clc
+clear all;
+close all
+ 
+wc = input('énter the cutoff frequency')
+N = input('enter the order/length of filter')
+alpha = floor((N-1)/2);
+ 
+for n = 1:N
+    if (n-1) == alpha
+        hd(n) = 1 - (wc/pi)
+    else
+        hd(n) = (1/(pi*(n-1-alpha)))*((sin(pi*(n-1-alpha)))-(sin(wc*(n-1-alpha))));
+    end
+    
+    
+end
+%find w(n)
+wn = hamming(N);
+ %find h(n)
+ 
+hn = hd'.*wn;
+w = 0:0.01:pi;
+h = freqz(hn, 1, w);
+subplot(3,1,1)
+plot(w/pi, abs(h));
+xlabel("Normalised frequency ");
+ylabel("Magnitude");
+ 
+%Applying sinusoidal signal as input
+t = 0:(1/314):1;
+fs = 570;
+x = 2*sin(2*pi*50*t)+4*sin(2*pi*120*t)+8*sin(2*pi*240*t);
+ 
+%frequency domain information of "x"
+y = fft(x);
+f = (0:length(x)-1)*fs/length(x);
+subplot(3,1,2);
+stem(f, abs(y));
+xlabel("frequency in hz");
+ylabel("frequency response of input signal");
+  
+yout = y.*h;
+subplot(3,1,3);
+stem(f, abs(yout));
+xlabel("frequency in HZ");
+ylabel("frequency response of output signal");
