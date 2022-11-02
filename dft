@@ -1,0 +1,44 @@
+clc;
+close all;
+clear all;
+xn=input('enter the i/p sequence: ');
+N1=length(xn);
+N=input('enter the no of points in DFT: ');
+xn=[xn zeros(1,(N-N1))];
+n1=0:N-1;
+subplot(3,2,1);
+stem(n1,xn);
+disp('Input Sequence = ');
+disp(xn);
+xlabel('time----->n');
+ylabel('amplitude');
+title('input sequence');
+n=0:N-1;
+k=0:N-1;
+nk=n'*k;     % creates a N by N matrix of nk values
+wn=exp((-1i*2*pi)/N);   % Wn or Twiddle factor
+wnnk=wn.^nk;     % DFT matrix
+xk=xn*wnnk;      % row vector for DFT coefficients
+subplot(3,2,2);
+stem(n1,real(xk));
+disp('DFT Sequence = ');
+disp(xk);
+xlabel('frequency resolvution----->k');
+ylabel('amplitude');
+title('real part of DFT');
+subplot(3,2,3);
+stem(n1,imag(xk));
+xlabel('frequency resolvution----->k');
+ylabel('amplitude');
+title('imaginary part of DFT');
+subplot(3,2,4);
+stem(n1,abs(xk));
+xlabel('frequency resolvution----->k');
+ylabel('amplitude');
+title('magnitude spectra');
+subplot(3,2,5);
+theta=atan2(imag(xk),real(xk));
+stem(n1,theta);
+xlabel('frequency resolvution----->k');
+ylabel('amplitude');
+title('phase spectra');
