@@ -1,0 +1,29 @@
+clc;
+close all;
+clear all;
+x = input('Enter the input sequence: ');
+h = input('Enter the filter response sequence: ');
+L = input('Enter no. of data points: ');
+M = length(h);
+lx = length(x);
+r = rem(lx,L);
+x1 = [x zeros(1,(L-r))];
+nr = (length(x1)/L);
+h1 = [h zeros(1,(L-1))];
+for k = 1 : nr
+m1(k,:) = x1(((k-1)*L+1):k*L);
+m2(k,:) = [m1(k,:) zeros(1,M-1)];
+m3(k,:) = ifft(fft(m2(k,:)).*fft(h1));
+m4(k,:) = [zeros(1,(k-1)*L) m3(k,:) zeros(1,(nr-k)*L)];
+end
+disp('Blocks of input sequence :');
+m1
+ 
+disp('Blocks of input sequence for overlap-add method :');
+m2
+disp('Convolved intermediate blocks :');
+m3
+disp('Shifted covolved blocks for overlap-addition :');
+m4
+disp('Linear Convolution of the input sequences :')
+y = sum(m4)
