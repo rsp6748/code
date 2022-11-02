@@ -1,0 +1,24 @@
+clc;
+close all;
+clear all;
+% Define specifications of Butterworth Analog filter
+alphap=input('maximum passband attenuation in db  = ');
+alphas=input('minimum Stopband attenuation in db =') ;
+fp=input(' passband edge frequency in Hz = ');
+fs = input(' stopband edge frequency in Hz = ');
+fsam =input('sampling frequency in HZ =');
+wp=2*pi*fp/fsam; % Pass band frequency in radian
+ws=2*pi*fs/fsam;% stopband  frequency in radian
+wpn=wp/pi;% Normalize frequency 
+wsn=ws/pi'% Normalize frequency 
+% Find order of filter (N) & Cut off Frequency (wc)
+   [N,wc]  =buttord(wpn,wsn,alphap,alphas)
+   % Find Transfer Function of Butterworth filter
+ [b,a]  =butter(N,wc);
+ % convert analog filter to digital filter
+   [bz,az]=impinvar(b,a,fsam);
+    subplot(2,1,1)
+   [y,w] =freqz(b,a);
+   plot(w/pi,abs(y));
+   xlabel("Normalized Frequency ");
+ ylabel("Magnitude");
