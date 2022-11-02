@@ -1,0 +1,31 @@
+clc;
+clear all;
+close all;
+X=input('enter first input sequence: ')
+Lx=length(X); 
+h=input('enter second input sequence: ')
+M=length(h);
+L=input('no of Data inputs: ')
+N=L+M-1;
+r=rem(Lx,L);
+X=[X zeros(1,L-r)];
+h=[h zeros(1,L-1)];
+Lnew=length(X)
+nr=Lnew/L 
+for (k=1:nr)
+    ma(k,:)=X(((k-1)*L)+1:k*L);   
+   
+    if(k==1)
+        ma1(k,:)=[zeros(1,(M-1)) ma(k,:)];
+    else
+        ma1(k,:)=[ma((k-1),L-M+2:L) ma(k,:)];
+    end
+     disp(ma1(k,:));
+     ma2(k,:)=ifft(fft(ma1(k,:)).*fft(h))    % convolution
+end
+ 
+ma3=ma2(:,M:L+M-1);
+disp('ma3');
+disp(ma3);
+y1=(ma3)'
+Y=y1(:)'
